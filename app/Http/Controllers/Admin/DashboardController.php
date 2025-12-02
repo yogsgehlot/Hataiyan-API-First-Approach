@@ -16,7 +16,7 @@ class DashboardController extends Controller
         // Fetch counts
         $totalUsers   = User::count();
         $totalPosts   = Post::count();
-        $totalReports = Report::count(); // or whatever model you're using
+        $totalReports = Report::where('resolved_at', null)->count(); // or whatever model you're using
 
         // Fetch recent items
         $recentUsers = User::latest()->take(5)->get();

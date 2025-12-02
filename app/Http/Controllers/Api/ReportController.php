@@ -58,40 +58,7 @@ class ReportController extends Controller
             'status' => 'pending',
         ]);
 
-        // -------------------------------------------------------
-        // 🔥 SEND NOTIFICATIONS
-        // -------------------------------------------------------
-
-        // 1️⃣ Notify the post owner (only if they aren't reporting themselves)
-        $postOwner = $post->user;
-        if ($postOwner && $postOwner->id !== $user->id) {
-            $notifications->create(
-                $postOwner,
-                'post_reported',
-                [
-                    'post_id' => $post->id,
-                    'report_id' => $report->id,
-                    'reason' => $request->reason,
-                ],
-                $user   // actor = the reporting user
-            );
-        }
-
-        // 2️⃣ Notify ALL admins
-        $admins = Admin::all();  // or Admin::where('is_active', 1)->get()
-        foreach ($admins as $admin) {
-            $notifications->create(
-                $admin,
-                'report_created',
-                [
-                    'post_id' => $post->id,
-                    'report_id' => $report->id,
-                    'reason' => $request->reason,
-                    'reported_by_id' => $user->id,
-                ],
-                $user
-            );
-        }
+   
 
         return response()->json([
             'success' => true,

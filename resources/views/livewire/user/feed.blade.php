@@ -1,13 +1,10 @@
 <div>
-
-
     {{-- POSTS --}}
     @foreach($posts as $post)
         <div class="my-3">
             <livewire:post.card :post="$post" :key="'post-' . $post['id'] . '-' . microtime(true)" />
         </div>
     @endforeach
-
 
     {{-- AUTO INFINITE SCROLL TRIGGER --}}
     @if($hasMore)

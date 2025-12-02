@@ -103,25 +103,30 @@ class PostController extends Controller
 
     public function show(string $id)
     {
-        $post = Post::with(
-            'user:id,name,avatar_path',
+        $post = Post::with([
+            'user:id,name,username,avatar_path',
             'likes:id,user_id,post_id',
             'comments.user:id,name,avatar_path',
             'comments.replies.user:id,name,avatar_path',
-        )->find($id);
-
-        if (!$post) {
-            return response()->json(['status' => false, 'message' => 'Post not found'], 404);
-        }
+        ])->findOrFail($id);
 
         $userId = Auth::guard('api')->id();
 
-        // Add is_liked and likes_count
+        // is_following check (manual)
+        $post->is_following = \App\Models\Follow::where('follower_id', $userId)
+            ->where('following_id', $post->user->id)
+            ->exists();
+
+        // like info
         $post->is_liked = $post->likes()->where('user_id', $userId)->exists();
         $post->likes_count = $post->likes->count();
 
-        return response()->json(['status' => true, 'data' => $post]);
+        return response()->json([
+            'status' => true,
+            'data' => $post
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -404,5 +409,5 @@ class PostController extends Controller
             'message' => 'Reply added',
             'data' => $reply
         ]);
-    }   
+    }
 }

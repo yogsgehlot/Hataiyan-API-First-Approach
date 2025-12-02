@@ -20,20 +20,31 @@
                 </div>
             </div>
 
+            <div class="flex items-center gap-3">
 
-            <!-- 3-dot menu button -->
-            <button wire:click="toggleMenu"
-                class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 p-2">
-                <!-- Heroicon Ellipsis Vertical -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zm0 6a.75.75 0 110-1.5.75.75 0 010 1.5zm0 6a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                </svg>
-            </button>
+                {{-- ============================ --}}
+                {{-- FOLLOW BUTTON --}}
+                {{-- Show only if not the same user --}}
+                @if(session('user.id') !== $post['user']['id'])
 
+                    <div class="shrink-0">
+                        @livewire('user.follow-button', ['user' => $post['user']])
+                    </div>
 
+                @endif
+                {{-- ============================ --}}
 
+                <!-- 3-dot menu button -->
+                <button wire:click="toggleMenu"
+                    class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zm0 6a.75.75 0 110-1.5.75.75 0 010 1.5zm0 6a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                    </svg>
+                </button>
+
+            </div>
 
             <!-- Dropdown Menu -->
 
@@ -64,7 +75,7 @@
                             @method('DELETE')
 
                             <button type="submit" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 dark:text-red-400
-                                   hover:bg-gray-100 dark:hover:bg-gray-700 text-left">
+                                                                   hover:bg-gray-100 dark:hover:bg-gray-700 text-left">
 
                                 <!-- Trash icon -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"

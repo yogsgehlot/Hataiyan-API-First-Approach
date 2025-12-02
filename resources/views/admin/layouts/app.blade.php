@@ -53,76 +53,71 @@
     bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl 
     border-b border-slate-200 dark:border-slate-700 shadow-sm">
 
-    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="h-16 flex items-center justify-between">
+        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="h-16 flex items-center justify-between">
 
-            {{-- Left: Brand --}}
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 group">
-                <img src="/images/Hataiyan_logo_pink.png" 
-                     class="h-10 w-10 object-contain rounded-lg shadow-sm group-hover:scale-105 transition" />
+                {{-- Left: Brand --}}
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 group">
+                    <img src="/images/Hataiyan_logo_pink.png"
+                        class="h-10 w-10 object-contain rounded-lg shadow-sm group-hover:scale-105 transition" />
 
-                <span class="font-semibold text-xl tracking-tight 
+                    <span
+                        class="font-semibold text-xl tracking-tight 
                              text-slate-800 dark:text-slate-200 group-hover:text-sky-600 dark:group-hover:text-sky-400">
-                    Admin Panel
-                </span>
-            </a>
+                        Admin Panel
+                    </span>
+                </a>
 
-            {{-- Right: Actions --}}
-            <div class="flex items-center gap-4">
+                {{-- Right: Actions --}}
+                <div class="flex items-center gap-4">
 
-                {{-- THEME TOGGLE --}}
-                <button id="admin-theme-toggle" aria-label="Toggle theme"
-                    class="h-9 w-9 flex items-center justify-center rounded-full 
+                    {{-- THEME TOGGLE --}}
+                    <button id="admin-theme-toggle" aria-label="Toggle theme" class="h-9 w-9 flex items-center justify-center rounded-full 
                            bg-slate-100 dark:bg-slate-700
                            hover:bg-slate-200 dark:hover:bg-slate-600 
                            transition shadow-sm">
 
-                    <span id="admin-theme-icon">
-                        {{-- Default Icon (Filled Moon / Sun dynamic from JS) --}}
-                        <svg class="w-5 h-5 text-slate-700 dark:text-slate-300" 
-                             fill="none" stroke="currentColor" stroke-width="1.7"
-                             viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" 
-                                  d="M21 12.79A9 9 0 1111.21 3 
+                        <span id="admin-theme-icon">
+                            {{-- Default Icon (Filled Moon / Sun dynamic from JS) --}}
+                            <svg class="w-5 h-5 text-slate-700 dark:text-slate-300" fill="none" stroke="currentColor"
+                                stroke-width="1.7" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 
                                      7 7 0 0021 12.79z" />
-                        </svg>
-                    </span>
-                </button>
-
-                {{-- LOGGED ADMIN --}}
-                @if(session()->has('admin'))
-                    <form action="{{ route('admin.logout') }}" method="POST">
-                        @csrf
-                        <button
-                            class="px-4 py-2 rounded-lg text-sm font-medium
-                                   bg-rose-50 text-rose-600 
-                                   hover:bg-rose-100 
-                                   dark:bg-rose-600/20 dark:text-rose-300 
-                                   dark:hover:bg-rose-600/30 
-                                   border border-rose-200 dark:border-rose-700 
-                                   flex items-center gap-2 transition">
-
-                            {{-- Heroicon: Arrow Left On Rectangle --}}
-                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                 class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M15.75 9V5.25a2.25 2.25 0 00-2.25-2.25h-6A2.25 
-                                         2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 
-                                         21h6a2.25 2.25 0 002.25-2.25V15M12 
-                                         9l-3 3m0 0l3 3m-3-3h12.75" />
                             </svg>
+                        </span>
+                    </button>
 
-                            Logout
-                        </button>
-                    </form>
-                @endif
+                    {{-- LOGGED ADMIN --}}
+                    @if(session()->has('admin'))
+                        <form action="{{ route('admin.logout') }}" method="POST">
+                            @csrf
+                            <button class="px-4 py-2 rounded-lg text-sm font-medium
+                                       bg-rose-50 text-rose-600 
+                                       hover:bg-rose-100 
+                                       dark:bg-rose-600/20 dark:text-rose-300 
+                                       dark:hover:bg-rose-600/30 
+                                       border border-rose-200 dark:border-rose-700 
+                                       flex items-center gap-2 transition">
 
+                                {{-- Heroicon: Arrow Left On Rectangle --}}
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25a2.25 2.25 0 00-2.25-2.25h-6A2.25 
+                                             2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 
+                                             21h6a2.25 2.25 0 002.25-2.25V15M12 
+                                             9l-3 3m0 0l3 3m-3-3h12.75" />
+                                </svg>
+
+                                Logout
+                            </button>
+                        </form>
+                    @endif
+
+                </div>
             </div>
         </div>
-    </div>
 
-</header>
+    </header>
 
 
     <!-- ============= LAYOUT ============= -->
@@ -133,8 +128,8 @@
 
             <!-- SIDEBAR -->
             <aside class="hidden md:block fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 
-        overflow-y-auto bg-white dark:bg-slate-900 border-r border-slate-200 
-        dark:border-slate-700 p-4">
+            overflow-y-auto bg-white dark:bg-slate-900 border-r border-slate-200 
+            dark:border-slate-700 p-4">
 
                 <nav class="space-y-1">
 
@@ -145,8 +140,8 @@
                     {{-- Dashboard --}}
                     <a href="{{ route('admin.dashboard') }}"
                         class="flex items-center gap-3 px-3 py-2 rounded-lg group 
-                      hover:bg-slate-100 dark:hover:bg-slate-800 transition
-                      {{ request()->routeIs('admin.dashboard') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                          hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                          {{ request()->routeIs('admin.dashboard') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
@@ -161,8 +156,8 @@
                     {{-- Manage Users --}}
                     <a href="{{ route('admin.users.index') }}"
                         class="flex items-center gap-3 px-3 py-2 rounded-lg group 
-                      hover:bg-slate-100 dark:hover:bg-slate-800 transition
-                      {{ request()->routeIs('admin.users.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                          hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                          {{ request()->routeIs('admin.users.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
@@ -177,8 +172,8 @@
                     {{-- Manage Posts --}}
                     <a href="{{ route('admin.posts.index') }}"
                         class="flex items-center gap-3 px-3 py-2 rounded-lg group 
-                      hover:bg-slate-100 dark:hover:bg-slate-800 transition
-                      {{ request()->routeIs('admin.posts.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                          hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                          {{ request()->routeIs('admin.posts.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
@@ -193,8 +188,8 @@
                     {{-- Reports --}}
                     <a href="{{ route('admin.reports.index') }}"
                         class="flex items-center gap-3 px-3 py-2 rounded-lg group 
-                      hover:bg-slate-100 dark:hover:bg-slate-800 transition
-                      {{ request()->routeIs('admin.reports.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                          hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                          {{ request()->routeIs('admin.reports.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
@@ -206,20 +201,24 @@
                         Reports
                     </a>
 
+
                     {{-- Manage Admins --}}
-                    <a href="{{ route('admin.admins.index') }}"
-                        class="flex items-center gap-3 px-3 py-2 rounded-lg group 
-                      hover:bg-slate-100 dark:hover:bg-slate-800 transition
-                      {{ request()->routeIs('admin.admins.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                    @if (session('admin.role') === 'super')
 
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M12 4v16m8-8H4" />
-                        </svg>
+                        <a href="{{ route('admin.admins.index') }}"
+                            class="flex items-center gap-3 px-3 py-2 rounded-lg group 
+                            hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                            {{ request()->routeIs('admin.admins.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
 
-                        Manage Admins
-                    </a>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M12 4v16m8-8H4" />
+                            </svg>
+
+                            Manage Admins
+                        </a>
+                    @endif
 
                 </nav>
 

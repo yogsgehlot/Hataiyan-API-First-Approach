@@ -16,7 +16,7 @@
                         d="M21 21l-4.35-4.35M16 10a6 6 0 11-12 0 6 6 0 0112 0z" />
                 </svg>
 
-                <!-- 🔥 Search Results Dropdown -->
+               
                 <div id="searchResults"
                     class="hidden absolute top-14 w-full bg-white dark:bg-gray-800 shadow-xl rounded-xl border border-gray-200 dark:border-gray-700 max-h-64 overflow-y-auto z-50">
                 </div>

@@ -61,6 +61,9 @@ Route::middleware(['session.auth'])->group(function () {
 
     Route::get('/notifications', [NotificationController::class, 'index'])
         ->name('user.notifications');
+    Route::get('/notifications/redirect/{notification}', [NotificationController::class, 'redirect'])
+        ->name('notifications.redirect');
+
 
 });
 

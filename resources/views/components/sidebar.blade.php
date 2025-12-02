@@ -57,7 +57,7 @@
 
 
   <!-- Messages -->
-  <li>
+  <!-- <li>
     <a href="/messages"
       class="flex items-center gap-3 px-4 py-2 rounded-md font-medium transition-colors
       {{ Request::is('messages') ? 'bg-blue-600 text-white' : 'text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800' }}">
@@ -68,7 +68,7 @@
       </svg>
       <span>Messages</span>
     </a>
-  </li>
+  </li> -->
 
   <!-- Profile -->
   <li class="pt-2 border-t border-gray-200 dark:border-gray-700">

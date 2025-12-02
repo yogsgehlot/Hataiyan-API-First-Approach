@@ -17,16 +17,7 @@ class NotificationController extends Controller
         $this->service = $service;
     }
 
-    /**
-     * GET /api/v1/notifications
-     *
-     * Response shape:
-     * {
-     *   "unread_count": 3,
-     *   "unread": [ ...all unread notifications... ],
-     *   "read": [ ...last 5 read notifications... ]
-     * }
-     */
+
     public function index(Request $request)
     {
         // Determine notifiable model: user or admin
@@ -57,6 +48,39 @@ class NotificationController extends Controller
         ]);
 
     }
+
+    public function getNotification($id)
+    {
+       
+        $notification = Notification::with(['actor:id,name'])
+            ->findOrFail($id);
+
+        // Mark as read
+        if (!$notification->is_read) {
+            $notification->update(['is_read' => true]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Notification fetched successfully',
+            'notification' => [
+                'id' => $notification->id,
+                'type' => $notification->type,
+                'is_read' => $notification->is_read,
+                'created_at' => $notification->created_at->diffForHumans(),
+
+                // dynamic custom fields
+                'data' => $notification->data ?? [],
+
+                // actor info (user who triggered the notification)
+                'actor' => $notification->actor ? [
+                    'id' => $notification->actor->id,
+                    'name' => $notification->actor->name,
+                ] : null,
+            ]
+        ], 200);
+    }
+
 
     public function markRead($id, Request $request)
     {

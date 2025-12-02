@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Post;
 
+use App\Models\Post;
 use Livewire\Component;
 use App\Services\ApiService;
 
@@ -28,6 +29,7 @@ class Card extends Component
     {
 
         $response = $this->api->get("posts/$postId");
+        // dd(Post::withExists(['user'])->first());
 
         //  dd($response);die;
         if ($response['success']) {

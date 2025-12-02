@@ -68,6 +68,7 @@ Route::middleware('auth:api')->group(function () {
     // routes/api.php
     Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
     Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get('/getNotifications/{id}', [NotificationController::class, 'getNotification']);
 
 
 });

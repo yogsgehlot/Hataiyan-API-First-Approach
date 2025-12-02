@@ -203,56 +203,7 @@
                 </div>
             </aside>
 
-            {{-- Right suggestions (fixed on md+) --}}
-            <aside class="hidden md:block fixed top-16 right-0 h-[calc(100vh-4rem)] w-72 overflow-auto p-4">
-                <div class="bg-white/0 dark:bg-gray-900 p-4 rounded-lg">
-                    <div class="space-y-4">
-                        <h6 class="flex items-center gap-2 font-semibold">
-                            {{-- user-plus icon --}}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                                <circle cx="12" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 8v6M22 11h-6" />
-                            </svg>
-                            Suggestions
-                        </h6>
-
-                        {{-- Suggestion item --}}
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <img src="{{ asset('images/default-avatar.jpg') }}" alt="user"
-                                    class="h-11 w-11 rounded-full object-cover">
-                                <div>
-                                    <div class="font-semibold">@raj 1</div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">Suggested for you</div>
-                                </div>
-                            </div>
-                            <button
-                                class="px-3 py-1.5 text-sm rounded-full border border-slate-200 dark:border-slate-700">Follow</button>
-                        </div>
-
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <img src="{{ asset('images/default-avatar.jpg') }}" alt="user"
-                                    class="h-11 w-11 rounded-full object-cover">
-                                <div>
-                                    <div class="font-semibold">@raj 2</div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400">Suggested for you</div>
-                                </div>
-                            </div>
-                            <button
-                                class="px-3 py-1.5 text-sm rounded-full border border-slate-200 dark:border-slate-700">Follow</button>
-                        </div>
-
-                        {{-- Add more suggestions as needed --}}
-                    </div>
-                </div>
-            </aside>
-
+           
             {{-- CENTER CONTENT: make it responsive: full width on small screens, and centered with side margins on md+ --}}
             <main class=" md:ml-64 md:mr-72  flex items-center justify-center ">
                 <div class="w-full px-2 py-4 ">

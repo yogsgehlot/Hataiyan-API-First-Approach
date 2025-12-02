@@ -1,4 +1,4 @@
-<div class="border-l-2 border-gray-200 dark:border-gray-700 pl-3">
+<div class="border-l-2 border-gray-200 dark:border-gray-700 pl-3" id={{'comment_'.$comment['id']}}>
 
     <!-- Comment -->
 

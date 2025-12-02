@@ -108,8 +108,11 @@ class UserController extends Controller
         $users = User::where('id', '!=', Auth::guard('api')->user()->id)->get();
 
         // random posts
-        $posts = Post::inRandomOrder()->take(10)->with(['user:id,name,username,avatar_path'])->get();
-
+        $posts = Post::whereNotNull('media_path')
+            ->inRandomOrder()
+            ->take(10)
+            ->with(['user:id,name,username,avatar_path'])
+            ->get();
         return response()->json(['status' => true, 'users' => $users, 'posts' => $posts]);
     }
 
@@ -140,8 +143,6 @@ class UserController extends Controller
 
         return response()->json(['status' => true, 'message' => 'Account deleted successfully']);
     }
-
-
 
     public function feed(Request $request, $page = 1)
     {
@@ -179,7 +180,7 @@ class UserController extends Controller
         ]);
     }
 
-    
+
 
 
 }
