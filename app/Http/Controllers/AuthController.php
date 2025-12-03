@@ -64,7 +64,7 @@ class AuthController extends Controller
 
         $credentials = $request->validate([
             'identifier' => 'required|string', // can be email or username
-            'password' => 'required'
+            'password' => 'required|min:6'
         ]);
 
         try {
@@ -110,10 +110,10 @@ class AuthController extends Controller
 
             return redirect()->route('login')->withErrors(['api_error' => $response['message'] ?? 'Logout failed.']);
         } catch (\Throwable $e) {
-            Log::error('Logout Exception', ['error' => $e->getMessage()]);
-            $this->apiService->updateToken("");
+            $this->apiService->updateToken(" ");
             $request->session()->flush();
-
+            
+            Log::error('Logout Exception', ['error' => $e->getMessage()]);
             return redirect()->route('login')->withErrors(['api_error' => 'Something went wrong, please try again later.']);
         }
     }

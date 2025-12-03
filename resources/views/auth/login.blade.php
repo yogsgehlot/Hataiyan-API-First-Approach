@@ -2,14 +2,12 @@
 @section('title', 'Login')
 
 @section('content')
-    <div
-        class="  flex items-center justify-center  transition-colors duration-300">
+    <div class="  flex items-center justify-center  transition-colors duration-300">
         <div
             class="flex flex-col md:flex-row bg-white dark:bg-gray-900 shadow-2xl rounded-2xl overflow-hidden max-w-5xl w-full mx-4">
 
             <!-- Left Side -->
-            <div
-                class="hidden md:flex md:w-1/2 flex-col items-center justify-center   text-white p-10">
+            <div class="hidden md:flex md:w-1/2 flex-col items-center justify-center   text-white p-10">
                 <img src="/images/Hataiyan_logo_pink.png" alt="Hataiyan" class="w-48 mb-6 animate-fade-in">
                 <h1 class="text-3xl font-bold mb-2">Welcome to <span class="text-white">Hataiyan</span></h1>
                 <p class="text-sm opacity-80">Connect. Create. Celebrate your moments.</p>
@@ -23,6 +21,16 @@
                         <span class="text-2xl font-bold text-gray-800 dark:text-white align-middle">Hataiyan</span>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Log in to continue sharing your story</p>
                     </div>
+
+                    @if ($errors->any())
+                        <div class="bg-red-500/10 border border-red-400 text-red-500 px-4 py-2 rounded-md text-sm mb-4">
+                            <ul class="list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
                     <form method="POST" action="{{ route('login') }}" id="login-form" class="space-y-4">
                         @csrf
@@ -114,13 +122,13 @@
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";
                 icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M3.98 8.223A10.477 10.477 0 001.458 12C2.732 16.057 6.523 19 11 19c2.196 0 4.218-.704 5.857-1.906M9.88 9.88a3 3 0 104.243 4.243M15 12a3 3 0 01-3 3m9.042-3A10.477 10.477 0 0013 5.64" />`;
+                                d="M3.98 8.223A10.477 10.477 0 001.458 12C2.732 16.057 6.523 19 11 19c2.196 0 4.218-.704 5.857-1.906M9.88 9.88a3 3 0 104.243 4.243M15 12a3 3 0 01-3 3m9.042-3A10.477 10.477 0 0013 5.64" />`;
             } else {
                 passwordInput.type = "password";
                 icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />`;
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />`;
             }
         });
     </script>

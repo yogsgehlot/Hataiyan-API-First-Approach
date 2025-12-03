@@ -74,6 +74,7 @@
     </script>
 
     @livewireStyles
+    @stack('scripts')
 </head>
 
 <body class="bg-white text-slate-800 dark:bg-slate-800 dark:text-slate-200">
@@ -138,6 +139,7 @@
 
     {{-- Success toast (top-right) --}}
     @if(session('success'))
+    
         <div id="success-toast"
             class="fixed top-5 right-5 z-50 flex items-center max-w-sm w-full bg-green-600 text-white rounded-lg shadow-lg animate-slide-in p-4"
             role="alert">
@@ -189,6 +191,62 @@
             }, 4000);
         </script>
     @endif
+   
+    @if(session('error'))
+        <div id="error-toast"
+            class="fixed top-5 right-5 z-50 flex items-center max-w-sm w-full bg-red-600 text-white rounded-lg shadow-lg animate-slide-in p-4"
+            role="alert">
+
+            <!-- Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 flex-shrink-0 text-white mr-3" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 9v2m0 4h.01M4.93 4.93a10 10 0 1 1 14.14 14.14A10 10 0 0 1 4.93 4.93z" />
+            </svg>
+
+            <!-- Message -->
+            <span class="flex-1 text-sm font-medium">
+                {{ session('error') }}
+            </span>
+
+            <!-- Close Button -->
+            <button type="button" class="ml-3 text-white hover:text-gray-200 focus:outline-none"
+                onclick="document.getElementById('error-toast').classList.add('hidden')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Same animation -->
+        <style>
+            @keyframes slideIn {
+                0% {
+                    opacity: 0;
+                    transform: translateX(1rem);
+                }
+
+                100% {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            .animate-slide-in {
+                animation: slideIn 0.3s ease-out;
+            }
+        </style>
+
+        <!-- Auto-hide after 4s -->
+        <script>
+            setTimeout(() => {
+                const toast = document.getElementById('error-toast');
+                if (toast) toast.classList.add('hidden');
+            }, 4000);
+        </script>
+    @endif
+
 
 
     {{-- MAIN LAYOUT: left sidebar (fixed), center scrollable, right suggestions (fixed) --}}
@@ -203,7 +261,7 @@
                 </div>
             </aside>
 
-           
+
             {{-- CENTER CONTENT: make it responsive: full width on small screens, and centered with side margins on md+ --}}
             <main class=" md:ml-64 md:mr-72  flex items-center justify-center ">
                 <div class="w-full px-2 py-4 ">

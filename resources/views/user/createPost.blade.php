@@ -7,6 +7,17 @@
 
             <h1 class="text-2xl font-semibold text-center text-gray-800 dark:text-gray-100 mb-6">Create Post</h1>
 
+            {{-- Validation Errors --}}
+            @if ($errors->any())
+                <div class="mb-4 p-3 rounded-lg text-red-700 border border-red-300">
+                    <ul class="list-disc pl-4 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li class="text-sm">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('post.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
                 @csrf
 
@@ -21,7 +32,7 @@
                         </svg>
                         <span class="text-gray-500 dark:text-gray-300 text-sm md:text-base">Click to upload photo or
                             video</span>
-                        <input type="file" name="media" id="media" accept="image/*,video/*" class="hidden" >
+                        <input type="file" name="media" id="media" accept="image/*,video/*" class="hidden">
                     </label>
                 </div>
 
@@ -41,15 +52,15 @@
                     <!-- Discard Button -->
                     <button type="button" onclick="window.history.back()"
                         class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-semibold py-2 rounded-lg shadow-sm 
-                   hover:bg-gray-300 dark:hover:bg-gray-600 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                               hover:bg-gray-300 dark:hover:bg-gray-600 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
                         Discard
                     </button>
 
                     <!-- Share Button -->
                     <button type="submit"
                         class="flex-1 bg-pink-500 text-white font-semibold py-2 rounded-lg shadow-md 
-                   hover:bg-gradient-to-r hover:from-pink-500 hover:to-pink-600 dark:hover:from-pink-600 dark:hover:to-pink-700 
-                   transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-400">
+                               hover:bg-gradient-to-r hover:from-pink-500 hover:to-pink-600 dark:hover:from-pink-600 dark:hover:to-pink-700 
+                               transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-400">
                         Share
                     </button>
                 </div>

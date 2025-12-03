@@ -73,7 +73,6 @@ class PostController extends Controller
         $post = Post::onlyTrashed()->findOrFail($id);
         $post->restore();
 
-        // 🔥 Notify post owner
         if ($post->user) {
             $notifications->create(
                 $post->user,
@@ -90,18 +89,12 @@ class PostController extends Controller
         return redirect()->back()->with('success', 'Post restored successfully.');
     }
 
-    /**
-     * Soft delete OR permanently delete
-     */
     public function destroy($id, NotificationService $notifications)
     {
         $admin = auth('admin')->user(); // admin guard
 
         $post = Post::withTrashed()->findOrFail($id);
 
-        // ----------------------------------------------------
-        // 🔥 1️⃣ Permanent delete (force delete)
-        // ----------------------------------------------------
         if ($post->trashed()) {
 
             // notify before deleting
@@ -123,9 +116,6 @@ class PostController extends Controller
             return redirect()->back()->with('success', 'Post permanently deleted.');
         }
 
-        // ----------------------------------------------------
-        // 🔥 2️⃣ Soft delete (move to trash)
-        // ----------------------------------------------------
         $post->delete();
 
         if ($post->user) {

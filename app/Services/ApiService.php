@@ -30,7 +30,6 @@
         {
             $status = $response->status();
             $body = json_decode($response->body(), true);
-
             if ($response->successful()) {
                 return [
                     'success' => true,
@@ -94,6 +93,7 @@
                         default => throw new \InvalidArgumentException("File uploads are only supported for POST, PUT, and PATCH methods"),
                     };
                 } else {
+                    
                     $response = match (strtolower($method)) {
                         'get' => $httpClient->get($url, $params),
                         'post' => $httpClient->post($url, $params),
@@ -143,7 +143,7 @@
             return $this->sendRequest('delete', $endpoint, $params);
         }
 
-        public function updateToken(string $token)
+        public function updateToken($token)
         {
             $this->token = $token;
             $this->headers['Authorization'] = 'Bearer ' . $token;

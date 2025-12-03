@@ -48,6 +48,8 @@ Route::middleware(['session.auth'])->group(function () {
     });
 
     Route::get('/explore', [UserController::class, 'explore'])->name('explore.feed');
+    Route::get('/explore/load-more', [UserController::class, 'loadMore'])
+        ->name('explore.loadMore');
 
     Route::get('/search-users', [UserController::class, 'search'])->name('search');
 

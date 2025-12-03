@@ -103,18 +103,32 @@ class UserController extends Controller
 
     // Soft delete user
 
-    public function explore()
+    public function explore(Request $request)
     {
-        $users = User::where('id', '!=', Auth::guard('api')->user()->id)->get();
+        $userId = Auth::guard('api')->user()->id;
 
-        // random posts
-        $posts = Post::whereNotNull('media_path')
-            ->inRandomOrder()
-            ->take(10)
-            ->with(['user:id,name,username,avatar_path'])
+        // Get explore users (unchanged)
+        $users = User::where('id', '!=', $userId)
+            ->select('id', 'name', 'username', 'avatar_path')
             ->get();
-        return response()->json(['status' => true, 'users' => $users, 'posts' => $posts]);
+
+        // Simple pagination - no duplicates
+        $perPage = 14;
+        $page = $request->get('page', 1);
+        $posts = Post::whereNotNull('media_path')
+            ->with(['user:id,name,username,avatar_path'])
+            ->orderBy('created_at', 'desc') // Sort by newest posts first
+            ->orderBy('id', 'desc')        // Use ID as a tie-breaker for identical timestamps
+            ->Paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json([
+            'status' => true,
+            'users' => $users,
+            'posts' => $posts
+        ]);
     }
+
+
 
     public function search(Request $request)
     {
@@ -147,12 +161,17 @@ class UserController extends Controller
     public function feed(Request $request, $page = 1)
     {
         $userId = Auth::guard('api')->user()->id;
-        $perPage = 10;
+        $perPage = 5;
 
-        // IDs of users the current user follows
-        $followingIds = Follow::where('follower_id', $userId)->pluck('following_id')->toArray();
+        $followingIds = Follow::where('follower_id', $userId)
+            ->pluck('following_id')
+            ->toArray();
 
-        // Include yourself also in the "following" group
+        // Prevent SQL errors
+        if (empty($followingIds)) {
+            $followingIds = [0];
+        }
+
         $priorityOneIds = array_merge($followingIds, [$userId]);
 
         $posts = Post::with(['user:id,name,avatar_path'])
@@ -163,15 +182,8 @@ class UserController extends Controller
                 ELSE 1
             END AS priority_score
         ")
-            ->orderByDesc('priority_score') // 2 first → following + self
-            ->orderBy('created_at', 'DESC') // latest first within same group
-            ->when(true, function ($q) use ($priorityOneIds) {
-                // Randomize ONLY the second group (non-following)
-                $q->orderByRaw("
-                CASE WHEN user_id NOT IN (" . implode(',', $priorityOneIds) . ")
-                THEN RAND() END
-            ");
-            })
+            ->orderByDesc('priority_score')  // Following + self first
+            ->orderBy('created_at', 'DESC')  // Newest first
             ->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
@@ -179,8 +191,6 @@ class UserController extends Controller
             'posts' => $posts
         ]);
     }
-
-
 
 
 }

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\NotificationService;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useBootstrap();
+        
         View::composer('components.sidebar', function ($view) {
             $notificationService = app(NotificationService::class);
 

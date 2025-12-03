@@ -29,9 +29,6 @@ class ReportController extends Controller
             });
         }
 
-        // ------------------------------------------------
-        // 🔥 ORDER — pending first, then reviewed, then resolved
-        // ------------------------------------------------
         $query->orderByRaw("
         FIELD(status, 'pending', 'reviewed', 'resolved')
     ")->orderBy('created_at', 'desc');
@@ -45,12 +42,6 @@ class ReportController extends Controller
             'filters' => $request->only(['q', 'per_page'])
         ]);
     }
-
-
-    /**
-     * Resolve a report
-     */
-
 
     public function resolve($id, NotificationService $notifications)
     {
@@ -66,7 +57,6 @@ class ReportController extends Controller
         $reporter = $report->reporter;          // reported_by user
         $postOwner = $report->reportedUser;     // the post owner
 
-        // 🔔 Notify reporter
         if ($reporter) {
             $notifications->create(
                 $reporter,
@@ -81,7 +71,6 @@ class ReportController extends Controller
             );
         }
 
-        // 🔔 Notify post owner
         if ($postOwner) {
             $notifications->create(
                 $postOwner,

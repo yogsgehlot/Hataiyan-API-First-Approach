@@ -12,6 +12,7 @@ class Feed extends Component
     public $page = 1;
     public $hasMore = true;
 
+    protected $listeners = ['load-more' => 'loadMore'];
     protected $api;
 
     public function boot(ApiService $apiService)
@@ -41,7 +42,7 @@ class Feed extends Component
                 $this->hasMore = false;
             }
         }
-    }
+    } 
 
 
 

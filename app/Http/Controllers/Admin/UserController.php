@@ -69,9 +69,6 @@ class UserController extends Controller
 
         $user = User::withTrashed()->findOrFail($id);
 
-        // ----------------------------------------------------
-        // 🔥 PERMANENT DELETE (force delete)
-        // ----------------------------------------------------
         if ($user->trashed()) {
 
             // Notify user BEFORE deletion
@@ -91,9 +88,6 @@ class UserController extends Controller
             return redirect()->back()->with('success', 'User permanently deleted.');
         }
 
-        // ----------------------------------------------------
-        // 🔥 SOFT DELETE (move to trash)
-        // ----------------------------------------------------
         $user->delete();
 
         $notifications->create(
@@ -117,7 +111,7 @@ class UserController extends Controller
         $user = User::onlyTrashed()->findOrFail($id);
         $user->restore();
 
-        // 🔥 Notify user
+
         $notifications->create(
             $user,
             'admin_restored',

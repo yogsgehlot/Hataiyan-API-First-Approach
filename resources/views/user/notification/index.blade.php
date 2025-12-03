@@ -12,10 +12,7 @@
                 You don't have any notifications yet.
             </div>
         @endif
-
-        {{-- ========================================================= --}}
-        {{-- UNREAD NOTIFICATIONS --}}
-        {{-- ========================================================= --}}
+ 
         @if(!empty($notifications['unread']))
             <div class="space-y-4">
 
@@ -37,7 +34,7 @@
                                 $actionText = 'unfollowed you';
                                 break;
 
-                            case 'like':
+                            case 'post_liked':
                                 $actionText = 'liked your post';
                                 break;
 
@@ -104,11 +101,7 @@
             </div>
         @endif
 
-
-
-        {{-- ========================================================= --}}
-        {{-- READ NOTIFICATIONS --}}
-        {{-- ========================================================= --}}
+ 
         @if(!empty($notifications['read']))
             <div class="space-y-4 pt-6">
 

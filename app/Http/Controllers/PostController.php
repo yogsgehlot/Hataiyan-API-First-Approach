@@ -35,10 +35,12 @@ class PostController extends Controller
         ]);
 
         $response = $this->apiService->post('posts', $validatedData);
+        
+        
         if ($response['success']) {
             return redirect()->route('profile')->with('success', 'Post created successfully!');
         }
-        return redirect()->back()->with('error', $response['message'] ?? 'Failed to create post.')->withInput();
+        return redirect()->back()->with('error', $response['message'] ?? 'Failed to create post.');
         
     }
 

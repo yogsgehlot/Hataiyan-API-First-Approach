@@ -10,6 +10,7 @@ use App\Models\Post;
 use App\Models\Reply;
 use App\Services\NotificationService;
 use Auth;
+use getID3;
 use Illuminate\Http\Request;
 class PostController extends Controller
 {
@@ -43,11 +44,12 @@ class PostController extends Controller
 
         return response()->json(['status' => true, 'data' => $posts]);
     }
-    /**
-     * Store a newly created resource in storage.
-     */
+  
+    
+
     public function store(Request $request, NotificationService $notifications)
     {
+  
         $request->validate([
             'caption' => 'nullable|string|max:1000|required_without:media',
             'media' => 'nullable|file|mimes:jpeg,png,jpg,mp4,mov,avi|max:51200|required_without:caption',
@@ -63,15 +65,38 @@ class PostController extends Controller
 
         if ($request->hasFile('media')) {
             $file = $request->file('media');
-            $mediaType = str_contains($file->getMimeType(), 'video') ? 'video' : 'image';
+            $extension = strtolower($file->getClientOriginalExtension());
+
+            // Detect media type
+            $isVideo = in_array($extension, ['mp4', 'mov', 'avi']);
+            $isImage = in_array($extension, ['jpg', 'jpeg', 'png']);
+
+            if ($isVideo) {
+                $getID3 = new getID3();
+                $info = $getID3->analyze($file->getPathname());
+                $duration = $info['playtime_seconds'] ?? 0;
+
+                if ($duration > 15) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Video must not be longer than 15 seconds.',
+                    ], 422);
+                }
+            }
+
+            $width = null;
+            $height = null;
+
+            if ($isImage) {
+                if ($size = getimagesize($file)) {
+                    $width = $size[0] ?? null;
+                    $height = $size[1] ?? null;
+                }
+            }
+
             $path = $file->store('posts', 'public');
 
-            // Only get width/height if an image
-            $size = getimagesize($request->file('media'));
-            $width = $size[0] ?? null;
-            $height = $size[1] ?? null;
-
-            $data['media_type'] = $mediaType;
+            $data['media_type'] = $isVideo ? 'video' : 'image';
             $data['media_path'] = $path;
             $data['width'] = $width;
             $data['height'] = $height;
@@ -79,9 +104,6 @@ class PostController extends Controller
 
         $post = Post::create($data);
 
-        // ----------------------------------
-        // 🔥 Trigger mention notifications
-        // ----------------------------------
         if (!empty($request->caption)) {
             $this->notifyMentionsForText(
                 $request->caption,
@@ -89,7 +111,7 @@ class PostController extends Controller
                 $notifications,
                 [
                     'post_id' => $post->id,
-                    'excerpt' => mb_substr($request->caption, 0, 150)
+                    'excerpt' => mb_substr($request->caption, 0, 150),
                 ]
             );
         }
@@ -97,9 +119,10 @@ class PostController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Post created successfully!',
-            'data' => $post
+            'data' => $post,
         ], 201);
     }
+
 
     public function show(string $id)
     {
@@ -128,9 +151,6 @@ class PostController extends Controller
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id, NotificationService $notifications)
     {
         $post = Post::find($id);
@@ -174,9 +194,6 @@ class PostController extends Controller
 
         $post->save();
 
-        // ----------------------------------------------------
-        // 🔥 Trigger mention notifications ONLY if caption changed
-        // ----------------------------------------------------
         if (
             !empty($newCaption) &&
             trim($oldCaption) !== trim($newCaption)    // caption is actually changed
@@ -199,9 +216,7 @@ class PostController extends Controller
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+  
     public function destroy(string $id)
     {
 
@@ -286,9 +301,6 @@ class PostController extends Controller
             'body' => $request->comment
         ]);
 
-        // ----------------------------------------------------
-        // 🔥 1. Notify Post Owner (skip if commenting own post)
-        // ----------------------------------------------------
         $postOwner = $post->user;
 
         if ($postOwner->id !== $actor->id) {
@@ -304,9 +316,7 @@ class PostController extends Controller
             );
         }
 
-        // ----------------------------------------------------
-        // 🔥 2. Notify Mentioned Users in Comment Body
-        // ----------------------------------------------------
+
         $this->notifyMentionsForText(
             $comment->body,
             $actor,
@@ -336,9 +346,7 @@ class PostController extends Controller
         $parentComment = Comment::findOrFail($request->comment_id);
         $post = Post::findOrFail($request->post_id);
 
-        // ----------------------------------------------------
-        // 🔥 Create reply
-        // ----------------------------------------------------
+    
         $reply = Reply::create([
             'comment_id' => $parentComment->id,
             'post_id' => $post->id,
@@ -349,9 +357,7 @@ class PostController extends Controller
         // Prepare excerpt
         $excerpt = mb_substr($reply->body, 0, 150);
 
-        // ----------------------------------------------------
-        // 🔥 1. Notify Parent Comment Owner
-        // ----------------------------------------------------
+     
         $commentOwner = $parentComment->user;
 
         if ($commentOwner && $commentOwner->id !== $actor->id) {
@@ -368,9 +374,6 @@ class PostController extends Controller
             );
         }
 
-        // ----------------------------------------------------
-        // 🔥 2. Notify Post Owner (only if different from actor & comment owner)
-        // ----------------------------------------------------
         $postOwner = $post->user;
 
         if (
@@ -390,9 +393,6 @@ class PostController extends Controller
             );
         }
 
-        // ----------------------------------------------------
-        // 🔥 3. Notify Mentioned Users (@username)
-        // ----------------------------------------------------
         $this->notifyMentionsForText(
             $reply->body,
             $actor,

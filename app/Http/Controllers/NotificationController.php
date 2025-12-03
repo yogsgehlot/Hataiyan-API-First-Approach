@@ -39,9 +39,7 @@ class NotificationController extends Controller
     {
         
         $response = $this->apiService->get('getNotifications/'.$id);
-        // Mark as read
-        // $notification->update(['is_read' => true]);
-        // dd($response);
+   
         $type = $response['data']['notification']['type'];
         $data = $response['data']['notification']['data'] ?? [];
 

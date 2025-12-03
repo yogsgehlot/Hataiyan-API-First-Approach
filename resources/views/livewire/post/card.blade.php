@@ -74,8 +74,9 @@
                             @csrf
                             @method('DELETE')
 
-                            <button type="submit" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 dark:text-red-400
-                                                                   hover:bg-gray-100 dark:hover:bg-gray-700 text-left">
+                            <button type="submit"
+                                class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 dark:text-red-400
+                                                                                   hover:bg-gray-100 dark:hover:bg-gray-700 text-left">
 
                                 <!-- Trash icon -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
@@ -112,19 +113,28 @@
 
         <!-- Media -->
         @if ($post['media_path'])
-
             <div class="px-4 pb-4">
+
+                {{-- IMAGE --}}
                 @if ($post['media_type'] === 'image')
                     <div class="w-full">
                         <div class="{{ $post['aspect_ratio_class'] }} overflow-hidden rounded-lg">
-                            <img src="{{ $post['media_path'] }}" class="w-full h-full object-cover">
+                            <img src="{{ $post['media_path'] }}" class="w-full h-full object-cover" />
                         </div>
                     </div>
-
-                @elseif ($post['media_type'] === 'video')
-                    <video src="{{ $post['media_path'] }}" controls
-                        class="w-full max-h-[500px] rounded-lg object-cover"></video>
                 @endif
+
+                {{-- VIDEO (supports both 9:16 and 16:9 automatically) --}}
+                @if ($post['media_type'] === 'video')
+                    <div class="w-full">
+                        {{-- BEST UI for mixed video types --}}
+                        <div class="aspect-video overflow-hidden rounded-lg">
+                            <video src="{{ $post['media_path'] }}" class="w-full h-full object-cover" controls playsinline autoplay loop>
+                            </video>
+                        </div>
+                    </div>
+                @endif
+
             </div>
         @endif
 

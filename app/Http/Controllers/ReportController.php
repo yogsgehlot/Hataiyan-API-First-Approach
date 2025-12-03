@@ -29,10 +29,6 @@ class ReportController extends Controller
         ]);
     }
 
-    /**
-     * Handle report submission
-     */
-
     public function storePostReport(Request $request, $postId)
     {
         $request->validate([

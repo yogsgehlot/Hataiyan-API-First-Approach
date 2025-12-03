@@ -99,18 +99,30 @@ class UserController extends Controller
             return redirect()->route('login')->with('error', 'Please login to explore users.');
         }
 
-        // Call API to get list of users
+        // Call API to get list of users + initial posts page
         $response = $this->apiService->get('explore');
 
         if ($response['success']) {
+            $postsData = $response['data']['posts'] ?? null;
+
             return view('user.explore', [
                 'users' => $response['data']['users'] ?? [],
-                'posts' => $response['data']['posts'] ?? [],
+                'posts' => $postsData ?? [],
+                'nextPageUrl' => $postsData['next_page_url'] ?? null,
             ]);
         }
 
-        return redirect()->back()->with('error', $response['message']);
+        return redirect()->back()->with('error', $response['message'] ?? 'Unable to load explore.');
     }
+
+    public function loadMore(Request $request)
+    {
+        $page = $request->page ?? 2;
+        $response = $this->apiService->get('explore', ['page' => $page]);
+        // dd($response);
+        return response()->json($response['data']['posts']);
+    }
+
 
     public function search(Request $request)
     {
