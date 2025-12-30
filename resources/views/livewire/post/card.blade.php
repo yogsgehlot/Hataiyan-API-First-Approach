@@ -129,7 +129,7 @@
                     <div class="w-full">
                         {{-- BEST UI for mixed video types --}}
                         <div class="aspect-video overflow-hidden rounded-lg">
-                            <video src="{{ $post['media_path'] }}" class="w-full h-full object-cover" controls playsinline autoplay loop>
+                            <video src="{{ $post['media_path'] }}" class="w-full h-full" controls playsinline autoplay loop>
                             </video>
                         </div>
                     </div>

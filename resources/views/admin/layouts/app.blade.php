@@ -88,24 +88,24 @@
                     </button>
 
                     {{-- LOGGED ADMIN --}}
-                    @if(session()->has('admin'))
+                    @if(session()->has('admin') && session('admin_2fa_passed'))
                         <form action="{{ route('admin.logout') }}" method="POST">
                             @csrf
                             <button class="px-4 py-2 rounded-lg text-sm font-medium
-                                       bg-rose-50 text-rose-600 
-                                       hover:bg-rose-100 
-                                       dark:bg-rose-600/20 dark:text-rose-300 
-                                       dark:hover:bg-rose-600/30 
-                                       border border-rose-200 dark:border-rose-700 
-                                       flex items-center gap-2 transition">
+                                                   bg-rose-50 text-rose-600 
+                                                   hover:bg-rose-100 
+                                                   dark:bg-rose-600/20 dark:text-rose-300 
+                                                   dark:hover:bg-rose-600/30 
+                                                   border border-rose-200 dark:border-rose-700 
+                                                   flex items-center gap-2 transition">
 
                                 {{-- Heroicon: Arrow Left On Rectangle --}}
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25a2.25 2.25 0 00-2.25-2.25h-6A2.25 
-                                             2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 
-                                             21h6a2.25 2.25 0 002.25-2.25V15M12 
-                                             9l-3 3m0 0l3 3m-3-3h12.75" />
+                                                         2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 
+                                                         21h6a2.25 2.25 0 002.25-2.25V15M12 
+                                                         9l-3 3m0 0l3 3m-3-3h12.75" />
                                 </svg>
 
                                 Logout
@@ -119,17 +119,125 @@
 
     </header>
 
+    @if(session('success'))
+
+        <div id="success-toast"
+            class="fixed top-5 right-5 z-50 flex items-center max-w-sm w-full bg-green-600 text-white rounded-lg shadow-lg animate-slide-in p-4"
+            role="alert">
+            <!-- Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 flex-shrink-0 text-white mr-3" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2l4-4m6 2a9 9 0 1 1-18 0a9 9 0 0 1 18 0z" />
+            </svg>
+
+            <!-- Message -->
+            <span class="flex-1 text-sm font-medium">
+                {{ session('success') }}
+            </span>
+
+            <!-- Close Button -->
+            <button type="button" class="ml-3 text-white hover:text-gray-200 focus:outline-none"
+                onclick="document.getElementById('success-toast').classList.add('hidden')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Small Tailwind animation -->
+        <style>
+            @keyframes slideIn {
+                0% {
+                    opacity: 0;
+                    transform: translateX(1rem);
+                }
+
+                100% {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            .animate-slide-in {
+                animation: slideIn 0.3s ease-out;
+            }
+        </style>
+
+        <!-- Optional auto-hide -->
+        <script>
+            setTimeout(() => {
+                const toast = document.getElementById('success-toast');
+                if (toast) toast.classList.add('hidden');
+            }, 4000);
+        </script>
+    @endif
+
+    @if(session('error'))
+        <div id="error-toast"
+            class="fixed top-5 right-5 z-50 flex items-center max-w-sm w-full bg-red-600 text-white rounded-lg shadow-lg animate-slide-in p-4"
+            role="alert">
+
+            <!-- Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 flex-shrink-0 text-white mr-3" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 9v2m0 4h.01M4.93 4.93a10 10 0 1 1 14.14 14.14A10 10 0 0 1 4.93 4.93z" />
+            </svg>
+
+            <!-- Message -->
+            <span class="flex-1 text-sm font-medium">
+                {{ session('error') }}
+            </span>
+
+            <!-- Close Button -->
+            <button type="button" class="ml-3 text-white hover:text-gray-200 focus:outline-none"
+                onclick="document.getElementById('error-toast').classList.add('hidden')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Same animation -->
+        <style>
+            @keyframes slideIn {
+                0% {
+                    opacity: 0;
+                    transform: translateX(1rem);
+                }
+
+                100% {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            .animate-slide-in {
+                animation: slideIn 0.3s ease-out;
+            }
+        </style>
+
+        <!-- Auto-hide after 4s -->
+        <script>
+            setTimeout(() => {
+                const toast = document.getElementById('error-toast');
+                if (toast) toast.classList.add('hidden');
+            }, 4000);
+        </script>
+    @endif
 
     <!-- ============= LAYOUT ============= -->
-    @if(session()->has('admin'))
+    @if(session()->has('admin') && session('admin_2fa_passed'))
 
         <!-- AUTHENTICATED ADMIN LAYOUT -->
         <div class="pt-16 flex">
 
             <!-- SIDEBAR -->
             <aside class="hidden md:block fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 
-            overflow-y-auto bg-white dark:bg-slate-900 border-r border-slate-200 
-            dark:border-slate-700 p-4">
+                        overflow-y-auto bg-white dark:bg-slate-900 border-r border-slate-200 
+                        dark:border-slate-700 p-4">
 
                 <nav class="space-y-1">
 
@@ -140,8 +248,8 @@
                     {{-- Dashboard --}}
                     <a href="{{ route('admin.dashboard') }}"
                         class="flex items-center gap-3 px-3 py-2 rounded-lg group 
-                          hover:bg-slate-100 dark:hover:bg-slate-800 transition
-                          {{ request()->routeIs('admin.dashboard') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                                      hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                                      {{ request()->routeIs('admin.dashboard') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
@@ -156,8 +264,8 @@
                     {{-- Manage Users --}}
                     <a href="{{ route('admin.users.index') }}"
                         class="flex items-center gap-3 px-3 py-2 rounded-lg group 
-                          hover:bg-slate-100 dark:hover:bg-slate-800 transition
-                          {{ request()->routeIs('admin.users.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                                      hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                                      {{ request()->routeIs('admin.users.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
@@ -172,8 +280,8 @@
                     {{-- Manage Posts --}}
                     <a href="{{ route('admin.posts.index') }}"
                         class="flex items-center gap-3 px-3 py-2 rounded-lg group 
-                          hover:bg-slate-100 dark:hover:bg-slate-800 transition
-                          {{ request()->routeIs('admin.posts.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                                      hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                                      {{ request()->routeIs('admin.posts.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
@@ -188,8 +296,8 @@
                     {{-- Reports --}}
                     <a href="{{ route('admin.reports.index') }}"
                         class="flex items-center gap-3 px-3 py-2 rounded-lg group 
-                          hover:bg-slate-100 dark:hover:bg-slate-800 transition
-                          {{ request()->routeIs('admin.reports.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                                      hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                                      {{ request()->routeIs('admin.reports.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
 
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
@@ -200,6 +308,19 @@
 
                         Reports
                     </a>
+                    <a href="{{ route('admin.2fa.enable') }}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg group 
+                                      hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                                      {{ request()->routeIs('admin.reports.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"
+                                d="M12 3l7 4v5c0 5-3.5 9-7 10-3.5-1-7-5-7-10V7l7-4z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M9 12l2 2 4-4" />
+                        </svg>
+                        2FA
+                    </a>
 
 
                     {{-- Manage Admins --}}
@@ -207,8 +328,8 @@
 
                         <a href="{{ route('admin.admins.index') }}"
                             class="flex items-center gap-3 px-3 py-2 rounded-lg group 
-                            hover:bg-slate-100 dark:hover:bg-slate-800 transition
-                            {{ request()->routeIs('admin.admins.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
+                                                    hover:bg-slate-100 dark:hover:bg-slate-800 transition
+                                                    {{ request()->routeIs('admin.admins.*') ? 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300' : 'text-slate-700 dark:text-slate-300' }}">
 
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="h-5 w-5 group-hover:text-sky-600 dark:group-hover:text-sky-300" fill="none"
@@ -242,12 +363,7 @@
     @endif
 
 
-    <!-- ============= TOAST SUCCESS MESSAGE ============= -->
-    @if(session('success'))
-        <div class="fixed top-5 right-5 z-50 bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg animate-slide-in">
-            {{ session('success') }}
-        </div>
-    @endif
+    
 
     <!-- ============= THEME TOGGLE SCRIPT ============= -->
     <script>

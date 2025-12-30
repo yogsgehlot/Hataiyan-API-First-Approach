@@ -76,10 +76,10 @@ class PostController extends Controller
                 $info = $getID3->analyze($file->getPathname());
                 $duration = $info['playtime_seconds'] ?? 0;
 
-                if ($duration > 15) {
+                if ($duration > 30) {
                     return response()->json([
                         'status' => false,
-                        'message' => 'Video must not be longer than 15 seconds.',
+                        'message' => 'Video must not be longer than 30 seconds.',
                     ], 422);
                 }
             }

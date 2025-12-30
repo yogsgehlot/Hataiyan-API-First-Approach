@@ -88,7 +88,7 @@
                     </div>
                 </button>
 
-                <button
+                <!-- <button
                     class="tab-btn px-4 sm:px-6 py-2 text-sm sm:text-base font-medium text-gray-700 dark:text-gray-300 border-b-2 border-transparent hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-500 transition-all duration-200"
                     data-tab="reels">
                     <div class="flex items-center space-x-2">
@@ -100,7 +100,7 @@
                         </svg>
                         <span>Reels</span>
                     </div>
-                </button>
+                </button> -->
             </div>
 
 

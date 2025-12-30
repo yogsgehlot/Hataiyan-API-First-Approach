@@ -22,7 +22,7 @@
 
             <!-- Users -->
             <div class="bg-gradient-to-br from-sky-500 to-sky-600 text-white rounded-xl p-6 shadow-lg 
-                    hover:shadow-xl transform transition-all hover:-translate-y-1">
+                        hover:shadow-xl transform transition-all hover:-translate-y-1">
                 <div class="flex justify-between items-center">
                     <div>
                         <p class="text-sm font-medium opacity-80">Total Users</p>
@@ -38,7 +38,7 @@
 
             <!-- Posts -->
             <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-xl p-6 shadow-lg
-                    hover:shadow-xl transform transition-all hover:-translate-y-1">
+                        hover:shadow-xl transform transition-all hover:-translate-y-1">
                 <div class="flex justify-between items-center">
                     <div>
                         <p class="text-sm font-medium opacity-80">Total Posts</p>
@@ -54,7 +54,7 @@
 
             <!-- Reports -->
             <div class="bg-gradient-to-br from-rose-500 to-rose-600 text-white rounded-xl p-6 shadow-lg 
-                    hover:shadow-xl transform transition-all hover:-translate-y-1">
+                        hover:shadow-xl transform transition-all hover:-translate-y-1">
                 <div class="flex justify-between items-center">
                     <div>
                         <p class="text-sm font-medium opacity-80">Reports</p>
@@ -92,7 +92,7 @@
 
                     @foreach($recentUsers as $u)
                         <div class="py-4 flex items-center justify-between hover:bg-slate-100/70 
-                                            dark:hover:bg-slate-700/40 transition-all rounded-lg px-3">
+                                                        dark:hover:bg-slate-700/40 transition-all rounded-lg px-3">
 
                             <!-- Left: Avatar + Details -->
                             <div class="flex items-center gap-3">
@@ -119,8 +119,8 @@
 
                             <!-- Right: View Button -->
                             <a href="{{ route('admin.users.show', $u->id) }}" class="text-sm px-3 py-1.5 rounded-lg bg-sky-50 text-sky-700 
-                                               dark:bg-sky-600/20 dark:text-sky-300 hover:bg-sky-100 
-                                               dark:hover:bg-sky-600/30 transition">
+                                                           dark:bg-sky-600/20 dark:text-sky-300 hover:bg-sky-100 
+                                                           dark:hover:bg-sky-600/30 transition">
                                 View
                             </a>
                         </div>
@@ -157,19 +157,34 @@
 
                     @foreach($recentPosts as $p)
                         <div class="py-4 flex items-start gap-4 hover:bg-slate-100/70 dark:hover:bg-slate-700/40
-                                transition-all rounded-lg px-3">
+                                            transition-all rounded-lg px-3">
 
                             <!-- Thumbnail -->
                             <div
                                 class="w-14 h-14 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden flex items-center justify-center shadow-sm">
                                 @if($p->media_path)
-                                    <img src="{{ asset($p->media_path) }}" class="w-full h-full object-cover" />
+
+                                    @php
+                                        $ext = strtolower(pathinfo($p->media_path, PATHINFO_EXTENSION));
+                                        $isVideo = in_array($ext, ['mp4', 'mov', 'avi', 'mkv', 'webm']);
+                                    @endphp
+
+                                    @if($isVideo)
+                                        <video src="{{ asset($p->media_path) }}" class="w-full h-full object-cover" controls
+                                            playsinline></video>
+                                    @else
+                                        <img src="{{ asset($p->media_path) }}" class="w-full h-full object-cover" alt="post media" />
+                                    @endif
+
                                 @else
+                                    {{-- Fallback Icon --}}
                                     <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 16l4-4a3 3 0 014 0l4 4m0-6l-2-2a2 2 0 00-3 0l-1 1" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M4 16l4-4a3 3 0 014 0l4 4m0-6l-2-2a2 2 0 00-3 0l-1 1" />
                                         <circle cx="8" cy="8" r="3" />
                                     </svg>
                                 @endif
+
                             </div>
 
                             <!-- Post Details -->
@@ -194,8 +209,8 @@
 
                             <!-- View Button -->
                             <a href="#" class="text-sm px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 
-                                   dark:bg-emerald-600/20 dark:text-emerald-300 hover:bg-emerald-100 
-                                   dark:hover:bg-emerald-600/30 transition">
+                                               dark:bg-emerald-600/20 dark:text-emerald-300 hover:bg-emerald-100 
+                                               dark:hover:bg-emerald-600/30 transition">
                                 View
                             </a>
                         </div>

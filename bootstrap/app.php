@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureAdmin2FA;
 use App\Http\Middleware\EnsureAdminSession;
 use App\Http\Middleware\SessionAuth;
 use Illuminate\Foundation\Application;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'session.auth' => SessionAuth::class,
             'session.admin' => EnsureAdminSession::class,
+            'admin.2fa' =>  EnsureAdmin2FA::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

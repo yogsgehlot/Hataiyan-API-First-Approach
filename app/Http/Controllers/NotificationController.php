@@ -57,7 +57,7 @@ class NotificationController extends Controller
             case 'unfollow':
                 return $safeRedirect('profile.view', $notification->actor_username ?? null);
 
-            case 'like':
+            case 'post_liked':
             case 'mention':
             case 'report_actioned':
                 return $safeRedirect('post.show', $data['post_id'] ?? null);

@@ -42,7 +42,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();
-
+        $request->session()->forget('admin_2fa_passed');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

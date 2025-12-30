@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminTwoFactorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
@@ -82,7 +83,7 @@ Route::prefix('admin')->group(function () {
     });
 
     // ----------------- AUTH ROUTES -----------------
-    Route::middleware('session.admin')->group(function () {
+    Route::middleware(['session.admin','admin.2fa'])->group(function () {
 
         // Logout
         Route::post('logout', [\App\Http\Controllers\Admin\AuthController::class, 'logout'])
@@ -168,9 +169,30 @@ Route::prefix('admin')->group(function () {
         Route::post('admins/{id}/update', [\App\Http\Controllers\Admin\AdminController::class, 'update'])->name('admin.admins.update');
         Route::delete('admins/{id}', [\App\Http\Controllers\Admin\AdminController::class, 'destroy'])->name('admin.admins.delete');
 
+        Route::prefix('/2fa')
+            ->name('admin.2fa.')
+            ->group(function () {
 
+                Route::get('/enable', [AdminTwoFactorController::class, 'index'])
+                    ->name('enable');
+
+                Route::post('/enable', [AdminTwoFactorController::class, 'store'])
+                    ->name('store');
+
+                Route::post('/confirm', [AdminTwoFactorController::class, 'confirm'])
+                    ->name('confirm');
+
+                Route::delete('/disable', [AdminTwoFactorController::class, 'destroy'])
+                    ->name('disable');
+            });
     });
+    Route::middleware('session.admin')->get("admin/2fa/two-factor-challenge", function(){
+        return view('admin.2fa.two-factor-challenge');
+    })->name('admin.2fa.two-factor-challenge');
 });
+
+
+
 
 
 // });

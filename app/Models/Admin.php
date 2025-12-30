@@ -3,20 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Database\Eloquent\SoftDeletes; 
 class Admin extends Authenticatable
 {
-    use HasApiTokens, Notifiable, SoftDeletes;
+    use HasApiTokens, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
 
     protected $guard = 'admin';
 
     protected $fillable = [
-        'name', 'email', 'password', 'role'
+        'name',
+        'email',
+        'password',
+        'role',
     ];
-
+    protected $casts = [
+        'two_factor_confirmed_at' => 'datetime',
+    ];
     protected $hidden = [
         'password',
     ];

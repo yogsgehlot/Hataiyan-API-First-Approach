@@ -122,7 +122,7 @@
                                 $actionText = 'unfollowed you';
                                 break;
 
-                            case 'like':
+                            case 'post_liked':
                                 $actionText = 'liked your post';
                                 break;
 
